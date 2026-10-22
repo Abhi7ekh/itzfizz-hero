@@ -4,7 +4,6 @@ import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { createHeroAnimation } from "@/lib/animations/heroAnimation";
-import HeroHeading from "./HeroHeading";
 import HeroStats from "./HeroStats";
 import ScrollVisual from "./ScrollVisual";
 
@@ -13,6 +12,7 @@ export default function Hero() {
   const trackRef = useRef(null);
   const carRef = useRef(null);
   const trailRef = useRef(null);
+  const revealRef = useRef(null);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -23,6 +23,7 @@ export default function Hero() {
         track: trackRef.current,
         car: carRef.current,
         trail: trailRef.current,
+        reveal: revealRef.current,
       });
     }, heroRef);
 
@@ -31,9 +32,13 @@ export default function Hero() {
 
   return (
     <main className="hero-stage" ref={heroRef}>
-      <HeroHeading />
       <HeroStats group="upper" />
-      <ScrollVisual trackRef={trackRef} carRef={carRef} trailRef={trailRef} />
+      <ScrollVisual
+        trackRef={trackRef}
+        carRef={carRef}
+        trailRef={trailRef}
+        revealRef={revealRef}
+      />
       <HeroStats group="lower" />
     </main>
   );
