@@ -9,8 +9,12 @@ export default function HeroStats({ group }) {
       className={`hero-stats hero-stats--${group}`}
       aria-label={group === "upper" ? "First impact statistics" : "Additional impact statistics"}
     >
-      {stats.map((stat) => (
-        <StatCard key={stat.id} {...stat} />
+      {stats.map((stat, index) => (
+        <StatCard
+          key={stat.id}
+          {...stat}
+          revealSide={index === 0 ? "left" : "right"}
+        />
       ))}
     </section>
   );

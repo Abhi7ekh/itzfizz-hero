@@ -5,15 +5,17 @@ const MOBILE_SCROLL_DISTANCE = 2100;
 const SHORT_VIEWPORT_SCROLL_DISTANCE = 1700;
 const MOBILE_BREAKPOINT = 768;
 const CARD_REVEAL_START = 0.16;
-const CARD_REVEAL_INTERVAL = 0.2;
-const CARD_REVEAL_DURATION = 0.1;
+const CARD_REVEAL_DURATION = 0.2;
+const CARD_REVEAL_STAGGER = 0.08;
+const RIGHT_CARD_REVEAL_START = 0.5;
 const CAR_REVEAL_PROGRESS = 0.8;
 const CAR_TEXT_CLEARANCE = 0.015;
 
 export function createHeroAnimation({ root, track, car, trail, reveal }) {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const statCards = gsap.utils.toArray(".hero-stat-card", root);
+  const leftCards = gsap.utils.toArray(".hero-stat-card--left", root);
+  const rightCards = gsap.utils.toArray(".hero-stat-card--right", root);
   const heading = reveal.querySelector(".hero-heading");
 
   const getRevealGeometry = () => {
@@ -39,7 +41,7 @@ export function createHeroAnimation({ root, track, car, trail, reveal }) {
     };
   };
 
-  gsap.set(statCards, { autoAlpha: 0, y: 20 });
+  gsap.set([...leftCards, ...rightCards], { autoAlpha: 0 });
   gsap.set(reveal, { clipPath: "inset(0 100% 0 0)" });
   gsap.from(car, { autoAlpha: 0, y: 12, duration: 0.7, ease: "power3.out" });
 
@@ -102,16 +104,21 @@ export function createHeroAnimation({ root, track, car, trail, reveal }) {
       CAR_REVEAL_PROGRESS,
     );
 
-  statCards.forEach((card, index) => {
+  [
+    { cards: leftCards, start: CARD_REVEAL_START },
+    { cards: rightCards, start: RIGHT_CARD_REVEAL_START },
+  ].forEach(({ cards, start }) => {
+    if (!cards.length) return;
+
     scrollTimeline.to(
-      card,
+      cards,
       {
         autoAlpha: 1,
-        y: 0,
         duration: CARD_REVEAL_DURATION,
         ease: "power1.out",
+        stagger: CARD_REVEAL_STAGGER,
       },
-      CARD_REVEAL_START + index * CARD_REVEAL_INTERVAL,
+      start,
     );
   });
 }
