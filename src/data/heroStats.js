@@ -6,16 +6,16 @@ export const heroStats = [
     tone: "lime",
   },
   {
-    id: "calls-decrease",
-    value: "23%",
-    description: "Decreased in customer phone calls",
-    tone: "blue",
-  },
-  {
     id: "pickup-growth",
     value: "27%",
     description: "Increase in pick up point use",
     tone: "charcoal",
+  },
+  {
+    id: "calls-decrease",
+    value: "23%",
+    description: "Decreased in customer phone calls",
+    tone: "blue",
   },
   {
     id: "calls-saved",
